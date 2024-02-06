@@ -1,5 +1,13 @@
 <resources>
+<!--    tuanle-->
+<!--    an important file used to manage all the text strings your application uses-->
+<!--    string: This is an XML element that defines a text string.-->
 
+<!--    name="app_default_auth_url": Identifier of the text string. a way to set an ID for a string, allowing you to reference it from Java source code or XML.-->
+
+<!--    translatable="false": This attribute specifies whether the string can be translated or not. In this case, the value is "false", i.e. the string does not need to be translated. commonly used for strings containing URL values or fixed data that do not need to be translated.-->
+
+<!--    https://117.4.241.150:448/v2/CentagateWS/webresources: Actual value of string-->
     <string name="app_name" translatable="false">BVB eToken</string>
     <string name="input_pincode_msg">Đặt PIN (Mã PIN gồm 06 ký tự số)</string>
     <string name="chuc_mung">Chúc mừng!</string>

@@ -37,26 +37,41 @@ import io.realm.Realm;
 public class SoftOTPFirebaseMessageService extends FirebaseMessagingService {
 
     @Override
+//    tuanld
+//    This method is called when a new token is created or an existing token has been updated on the device.
     public void onNewToken(String s) {
+//        Call the parent class's onNewToken() method
         super.onNewToken(s);
-
+//        Create a PreferenceHelper object to manage application preferences.
+//        PreferenceHelper is a support class created to simplify the process of storing and retrieving values in an application's SharedPreferences.
         PreferenceHelper preferenceHelper = new PreferenceHelper(getApplicationContext());
+
+//        Use PreferenceHelper to save the new token to your application's SharedPreferences.
+//        The setDeviceToken() method can be defined in PreferenceHelper to store the token value into SharedPreferences as a key-value pair.
+//            In this case, the new token value passed to the method is s.
         preferenceHelper.setDeviceToken(s);
 
     }
 
     @Override
+//    onMessageReceived(RemoteMessage remoteMessage) method is called when a message from the Firebase Cloud Messaging (FCM) server is received by the device
     public void onMessageReceived(RemoteMessage remoteMessage) {
+//        call the parent class's onMessageReceived() method to ensure that the parent class's initialization operations are performed properly
         super.onMessageReceived(remoteMessage);
+//        Print out remoteMessage information to the console for debugging
         System.out.println("-----------------------" + remoteMessage.toString());
+//        Print out message data from remoteMessage to the console for debugging
         System.out.println("-----------------------" + remoteMessage.getData().toString());
         // String dataObj = remoteMessage.getData().get("message");
         // System.out.println("------------------------" + dataObj);
         Log.e("dataChat", remoteMessage.getData().toString());
+//        Initializes a JSONObject object to parse message data.
         JSONObject jsonObject = null;
+//        Get message data from remoteMessage and save it into a map with key and value of type String.
+//        This data often contains parameters and custom values sent from the server.
         Map<String, String> params = remoteMessage.getData();
         try {
-
+//            Parse the message data from map params into a JSONObject object for easier retrieval and processing.
             jsonObject = new JSONObject(params);
 
             String message = jsonObject.getString("message");
@@ -70,7 +85,9 @@ public class SoftOTPFirebaseMessageService extends FirebaseMessagingService {
             e.printStackTrace();
             return;
         }
-
+//      Check if the app is running in the background by calling the isAppIsInBackground() method.
+//      If the application is running in the background, display notification notifications by calling the setupNotification(params) method.
+//      If not, save the session information to SharedPreferences using PreferenceHelper, then subscribe to an EventBus event to notify other application components about this event.
         if (isAppIsInBackground(getApplicationContext())) {
             setupNotification(params);
 

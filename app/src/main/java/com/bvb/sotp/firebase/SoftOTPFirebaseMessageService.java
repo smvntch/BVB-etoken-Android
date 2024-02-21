@@ -112,19 +112,29 @@ public class SoftOTPFirebaseMessageService extends FirebaseMessagingService {
 
     }
 
+//    Declare the saveNoti method, which takes a message parameter of type String and returns no value (void).
     void saveNoti(String message) {
         System.out.println("----saveNoti---------" + message);
+//        Create a Realm object to interact with the Realm database.
         Realm realm = Realm.getDefaultInstance();
+//        long id = PeepApp.Companion.getMobilePushPrimaryKey().getAndIncrement();: Retrieves a primary key for the new entry in the Realm database.
+//        The getMobilePushPrimaryKey() method is called from the PeepApp.Companion object, through the getAndIncrement() method we ensure that each new entry has a unique primary key.
         long id = PeepApp.Companion.getMobilePushPrimaryKey().getAndIncrement();
-
+//        realm.executeTransactionAsync(realm1 -> { ... }: Opens an asynchronous Realm transaction to add new data to the database.
+//        The statements in the lambda expression (realm1 -> { ... }) will be executed in the body of the transaction.
         realm.executeTransactionAsync(realm1 -> {
+//            Create a new object of the MobilePushRealmModel class in the Realm database with the primary key being the id obtained earlier.
             MobilePushRealmModel model = realm1.createObject(MobilePushRealmModel.class, id);
+//            Assign the current time value to the date field of the model object.
             model.date = System.currentTimeMillis();
+//            Assign the value of the message parameter to the detail field of the model object.
             model.detail = message;
+//            Assign the value Constant.NOTI_TYPE_MOBILE_PUSH to the type field of the model object
             model.type = Constant.NOTI_TYPE_MOBILE_PUSH;
         });
     }
 
+//    The setupNotification function is used to create and display notifications on the device based on data passed in the form of Map<String, String>.
     private void setupNotification(Map<String, String> dataObj) {
         System.out.println("---setupNotification-------------------------");
         try {
@@ -200,24 +210,32 @@ public class SoftOTPFirebaseMessageService extends FirebaseMessagingService {
         System.out.println("---setupNotification-----------------end--------");
 
     }
-
+//    Used to check if the application is running in the background or not.
     private boolean isAppIsInBackground(Context context) {
+//        Initialize isInBackground variable: This variable is initially initialized to true, assuming that the application is running in the background.
         boolean isInBackground = true;
+//        Use context.getSystemService(Context.ACTIVITY_SERVICE) to retrieve an ActivityManager, from which you can manage activities in the system.
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+//        Use am.getRunningAppProcesses() to get a list of processes running on the device.
         List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+
         for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
             if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 for (String activeProcess : processInfo.pkgList) {
                     if (activeProcess.equals(context.getPackageName())) {
+//                        If there is a current application process running in the foreground state, then set the isInBackground variable to false.
                         isInBackground = false;
                     }
                 }
             }
         }
-
+//        Finally, returns the value of the isInBackground variable, which represents whether the application is running in the background or not.
         return isInBackground;
     }
 
+//    The createNotificationChannel function is used to create a new notification channel on devices running Android Oreo (API 26) and above.
+//    Notification channels are a feature introduced from Android Oreo for more flexible notification management and configuration.
+//    Using notification channels, apps can control how notifications are displayed and prioritized on the device.
     public static String createNotificationChannel(Context context) {
 
         // NotificationChannels are required for Notifications on O (API 26) and above.

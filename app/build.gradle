@@ -47,19 +47,53 @@ android {
         multiDexEnabled true
     }
 
+    flavorDimensions "version"
+
+    productFlavors {
+        SMVN {
+            dimension "version"
+            applicationIdSuffix ".smvn"
+        }
+        bvbUAT {
+            dimension "version"
+            applicationIdSuffix ".bvbuat"
+        }
+        bvbPROD{
+            dimension "version"
+            applicationIdSuffix ".bvbprod"
+        }
+
+    }
+
     buildTypes {
-//        debug {
-//            minifyEnabled true
-//            shrinkResources true
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//        }
+        debug {
+//            applicationIdSuffix ".debug"
+//            versionNameSuffix "-debug"
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
 
 //        13/6: bị lỗi không xác thực được QR CODE, PUSH và kích hoạt user, sau khi bỏ phần release thì bình thường
-//        release {
+        release {
 //            minifyEnabled true
 //            shrinkResources true
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//        }
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def appName = "BVB-eToken"
+            def versionCode = defaultConfig.versionCode
+            def versionName = defaultConfig.versionName
+            def flavorName = variant.flavorName ?: "" // Mặc định là chuỗi trống nếu flavorName là null
+            def buildType = variant.buildType.name
+            def dateTime = new Date().format('yyyyMMdd-HHmmss')
+
+            // Bao gồm flavorName trong outputFileName
+            outputFileName = "${appName}-${flavorName}-v${versionName}(${versionCode})-${buildType}-${dateTime}.apk"
+        }
     }
     compileOptions {
         sourceCompatibility 11

@@ -66,20 +66,20 @@ android {
     }
 
     buildTypes {
-        debug {
+//        debug {
 //            applicationIdSuffix ".debug"
 //            versionNameSuffix "-debug"
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-
-//        13/6: bị lỗi không xác thực được QR CODE, PUSH và kích hoạt user, sau khi bỏ phần release thì bình thường
-        release {
 //            minifyEnabled true
 //            shrinkResources true
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+//        }
+
+//        13/6: bị lỗi không xác thực được QR CODE, PUSH và kích hoạt user, sau khi bỏ phần release thì bình thường
+//        release {
+//            minifyEnabled true
+//            shrinkResources true
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
     }
 
     applicationVariants.all { variant ->

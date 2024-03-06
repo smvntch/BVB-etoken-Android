@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.bvb.sotp.BuildConfig;
 import com.bvb.sotp.Constant;
 import com.bvb.sotp.PeepApp;
 import com.bvb.sotp.realm.MobilePushRealmModel;
@@ -42,6 +43,16 @@ public class SoftOTPFirebaseMessageService extends FirebaseMessagingService {
     public void onNewToken(String s) {
 //        Call the parent class's onNewToken() method
         super.onNewToken(s);
+
+
+        if (BuildConfig.DEBUG) {
+            Log.d("FCM Token", "Token" + s);
+        }
+//06/03: Sau khi kích hoạt thì đây là log của FCM Token:
+//        2024-03-06 18:02:50.353 16279-16925 FCM Token               com.bvb.sotp.smvn                    D  TokeneWg3GfBuTfeOeKgLlmgsOX:APA91bEe1ETFvzBprILINILLBJsOlHRLiPx3lD_JDxZrSGfCkFcyx6taw_qfqYlSRw8t8MeN6usNUHlSf0dcmzj8xrG_QT5swVLoI89w_kFWgTV69TlGWHHtuy6GDrdzKDpjryMMPjNQ
+//        Còn đây là log ghi nhận trên centagate khi thực hiện lệnh push:
+//        Push message to eWg3GfBuTfeOeKgLlmgsOX:APA91bEe1ETFvzBprILINILLBJsOlHRLiPx3lD_JDxZrSGfCkFcyx6taw_qfqYlSRw8t8MeN6usNUHlSf0dcmzj8xrG_QT5swVLoI89w_kFWgTV69TlGWHHtuy6GDrdzKDpjryMMPjNQ successful
+//        Hàm này là hàm khi kích hoạt sẽ sinh ra FCM Token và cập nhật vào PreferenceHelper. FCM Token này dùng để thực hiện push
 //        Create a PreferenceHelper object to manage application preferences.
 //        PreferenceHelper is a support class created to simplify the process of storing and retrieving values in an application's SharedPreferences.
         PreferenceHelper preferenceHelper = new PreferenceHelper(getApplicationContext());

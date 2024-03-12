@@ -216,7 +216,8 @@ class ActiveAppActivity : MvpActivity<ActiveAppPresenter>(), ActiveAppContract {
     fun activateSample(): Boolean? {
 
         var result: Boolean? = false
-
+        //Online Provisioning
+        //Khởi tạo web service
         val accountService = AccountService()
 
         //this will be the security key of every important data in the SDK
@@ -267,10 +268,17 @@ class ActiveAppActivity : MvpActivity<ActiveAppPresenter>(), ActiveAppContract {
             }
 
             //validate the username and activation code
+            //Getting the session info from online provisioning api
+            //id khách hàng và mã kích hoạt là cần thiết làm tham số
+            //sessionInfo là một biến được gán giá trị trả về từ việc gọi phương thức onlineProvisioning của accountService.
             val sessionInfo = accountService.onlineProvisioning(username, activationCode)
 
             //activating or binding to the server
-            val bindInfo = accountService.bindComplete(
+            //TOKEN được get từ firebase
+            //model, hid, deviceinfor đc lấy từ thiết bị người dùng
+
+
+             val bindInfo = accountService.bindComplete(
                 sessionInfo, TOKEN, hid,
                 "Android " + Build.VERSION.RELEASE, model, hid, true, null, securityDevice
             )
@@ -284,6 +292,7 @@ class ActiveAppActivity : MvpActivity<ActiveAppPresenter>(), ActiveAppContract {
 
             if (otpEnabled!!) {
                 //if user has OTP direct to activate User & OTP
+                // Sau bind thành công, nó sẽ kích hoạt token
                 val resultSuccess = accountService.updateBindCompleteStatus(
                     sessionInfo,
                     hid,

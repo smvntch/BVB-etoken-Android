@@ -53,10 +53,12 @@ android {
         SMVN {
             dimension "version"
             applicationIdSuffix ".smvn"
+
         }
         bvbUAT {
             dimension "version"
             applicationIdSuffix ".bvbuat"
+
         }
         bvbPROD{
             dimension "version"

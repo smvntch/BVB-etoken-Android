@@ -190,6 +190,8 @@ class ActiveAppActivity : MvpActivity<ActiveAppPresenter>(), ActiveAppContract {
 
     }
 
+
+//    nút button có id=btn_active trong activity_active_app.xml
     @OnClick(R.id.btn_active)
     fun onActiveClick() {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -406,10 +408,13 @@ class ActiveAppActivity : MvpActivity<ActiveAppPresenter>(), ActiveAppContract {
         }
     }
 
+//    thực hiện kích hoạt
     internal inner class ActivateProcess : AsyncTask<Int, Void, Int>() {
         override fun doInBackground(vararg params: Int?): Int {
             println("-----onPostExecute----------------")
 
+
+            // gọi một hàm activateSample() để thực hiện quá trình kích hoạt. Nếu có lỗi xảy ra, nó sẽ bắt các ngoại lệ và trả về mã lỗi tương ứng.
             var result: Boolean? = false
             try {
                 result = activateSample()
@@ -426,7 +431,7 @@ class ActiveAppActivity : MvpActivity<ActiveAppPresenter>(), ActiveAppContract {
 
         var progressDialog: AlertDialog? = null
 
-
+        //onPreExecute(): Phương thức này được gọi trước khi tiến trình nền bắt đầu. Trong trường hợp này, nó tạo và hiển thị một hộp thoại tiến trình (progress dialog) để thông báo cho người dùng biết rằng quá trình đang được thực thi
         override fun onPreExecute() {
             super.onPreExecute()
             progressDialog = SpotsDialog.Builder().setContext(this@ActiveAppActivity).build()
@@ -435,6 +440,8 @@ class ActiveAppActivity : MvpActivity<ActiveAppPresenter>(), ActiveAppContract {
             progressDialog!!.show()
         }
 
+    //doInBackground() trả về =1 thì gọi  gọi onActiveSuccess()
+    //Nếu kết quả không phải là 1, nó xử lý lỗi thông qua ErrorUtils().activeErrorHandle() và ghi log thông tin lỗi ở ErrorUtils.kt
         override fun onPostExecute(param: Int?) {
 
             progressDialog!!.dismiss()
